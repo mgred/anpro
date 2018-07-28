@@ -1,0 +1,31 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+    # Initialize Variables
+    is_annotation = 0;
+    has_annotation = 0;
+    printed_line = 0;
+}
+
+#{ is_annotation = match($0, delimiter) == 1; }
+{ is_annotation = match($0, FS) == 1; }
+
+is_annotation && printed_line {
+    has_annotation = 0;
+    printed_line = 0;
+}
+
+#$0 == delimiter""term || $0 == delimiter {
+$2 == term || $0 == FS {
+    has_annotation = 1;
+    if(verbose) {
+      print FS""term
+    }
+}
+
+is_annotation { next; }
+
+has_annotation {
+    print;
+    printed_line = 1;
+}

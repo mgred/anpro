@@ -1,0 +1,92 @@
+#!/bin/sh
+
+# @Help
+#
+# anpro - Annotation Processor
+#
+# Usage:
+#
+# anpro [term] [options] -- [files]
+#
+# @Help
+# Term:
+#	Any String
+#
+# @Help
+# @Options
+# Options:
+#
+# -d	Set annotation mark, default: '@'
+# -p	Define a file pattern to browse, default: '*'
+#
+# -h	Print this help message, use -h [Options] for more
+# -v	Print the version
+#
+# @Help
+# @Files
+# Files:
+#
+# --	Set Files to browse, default: none
+#
+# @-
+
+# Defaults
+version=0.0.0
+delimiter="@"
+pattern="*"
+verbose=0
+
+# @Options
+# Details
+#
+# Informational Options
+#
+# @-
+# @Options
+#  -h,	Print Help menu and exit, gain detailed informatin by giving
+#     	a second parameter, Options
+#
+#  anpro -h Options
+#
+# @-
+test "$1" = "-h" &&
+	./anpro ${2:-"Help"} -d "# @" -- $0 | sed 's/^#[ ]\{0,1\}//' &&
+	return 0;
+
+# @Options
+#  -v,	Print the current SemVer of the program and exit
+#
+#  anpro -v
+#
+# @-
+test "$1" = "-v" &&
+	echo $version &&
+	return 0;
+
+# @Options
+# Processing Arguments
+#
+#  -d <string>,	Set a custom annotation mark
+#
+#  anpro -d "="
+#
+#  This might be useful to parse second level headlines in
+#  markdown:
+#
+#  anpro -d "## "
+#
+# @-
+for arg in $@; do
+	case $arg in
+		-d) delimiter=$(echo "$@" | sed 's/ -/\n/g' | grep '^d' | sed 's/^d //');;
+		-p) pattern=$(echo "$@" | sed 's/ -/\n/g' | grep '^p' | cut -d ' ' -f 2);;
+    -V) verbose=1;;
+		--) files=$(echo "$@" | sed 's/ -/\n/g' | grep '^-' | cut -d ' ' -f 2-);;
+	esac
+done
+
+# Find file according to the given pattern
+files=${files:-$(find . -type f -name "$pattern")}
+
+#awk -f ./annotations -v term="$1" -v delimiter="$delimiter" -v verbose=$verbose -- $files
+awk -F "$delimiter" -f ./annotations -v term="$1" -v verbose=$verbose -- $files

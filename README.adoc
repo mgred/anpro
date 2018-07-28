@@ -1,0 +1,130 @@
+= Anpro - Annotation Processor
+//:icons: font
+:toc: left
+
+link:https://github.com/mgre/anpro[`anpro`] is a simple annotation processor
+for plain text files
+
+== Description
+
+`anprop` is a tool which helps to read and organise Annotations written in plain
+text or source code files. +
+Annotations are blocks of text which are preceded with an identifier and
+describe or document a certain topic.
+
+.Example
+[source]
+----
+@
+Rolling Stones
+
+@Single
+@1963
+Come On
+
+@Single
+@1964
+Not Fade Away
+----
+
+I came across an (apparantly) abondened Project called `kelp`, which aims to be
+an _Annotation Framework_.
+After getting into it, I thought it acutally solves a pretty need, even though
+its concept might be a bit oldfashioned.
+
+
+== Installation
+
+In order to install/use `anpro` you (might) need some tools first:
+
+.Requirements
+* `awk` (Process Annotations)
+* `make` (_Optional_, Build Tool)
+* `asciidoctor` (_Optional_, Documentation Generation)
+
+[NOTE]
+====
+`awk` and `make` should be available on most *nix Platforms by default.
+====
+
+Checkout this repository and change to its directory
+
+[source, sh]
+----
+git clone --depth 1 git@github.com/mgred/anpro $HOME/path/to/anpro
+cd $HOME/path/to/anpro
+----
+
+Run:
+
+[source, sh]
+----
+make
+----
+
+This will simply make the `./anpro` script executable.
+
+`anpro` is then read-to-use:
+
+[source, sh]
+----
+./anpro -h
+----
+
+If you want to install the script globally to the System, run:
+
+[source, sh]
+----
+make install
+----
+
+By default, the script will install all files to `/usr/bin`.
+This means it simply links the `anpros` script to this path. +
+You can customise the installation path with the `PREFIX` variable.
+
+Assuming you have a direcory called `bin` in your `$HOME` directory, which is
+also set in `$PATH`.
+
+[source, sh]
+----
+make install PREFIX=$HOME/bin
+----
+
+[IMPORTANT]
+.Previleges
+====
+You might need root permissions (`sudo`) in order to run this command in
+`/usr/bin`
+====
+
+== Usage
+
+`anpro [Term] [Options] -- [Files]`
+
+.Hello World
+[source, sh]
+----
+echo "@message\nHello World" > my_annotation
+anpro message -- my_annotation
+Hello World
+----
+
+.Custom Annotation Mark
+[source, sh]
+----
+echo "#message\nHello World" > my_annotation
+anpro message -d "#" -- my_annotation
+Hello World
+----
+
+== Uninstallation
+
+Remove all related Files from the System
+
+[source, sh]
+----
+make uninstall
+----
+
+NOTE: If a custom `PREFIX` was used for the installation, you need to specify
+this again, e.g.: `make uninstall PREFIX=$HOME/bin`.
