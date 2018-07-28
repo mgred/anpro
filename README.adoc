@@ -2,12 +2,12 @@
 //:icons: font
 :toc: left
 
-link:https://github.com/mgre/anpro[`anpro`] is a simple annotation processor
+link:https://github.com/mgred/anpro[`anpro`] is a simple annotation processor
 for plain text files
 
 == Description
 
-`anprop` is a tool which helps to read and organise Annotations written in plain
+`anpro` is a tool which helps to read and organise Annotations written in plain
 text or source code files. +
 Annotations are blocks of text which are preceded with an identifier and
 describe or document a certain topic.
@@ -26,12 +26,6 @@ Come On
 @1964
 Not Fade Away
 ----
-
-I came across an (apparantly) abondened Project called `kelp`, which aims to be
-an _Annotation Framework_.
-After getting into it, I thought it acutally solves a pretty need, even though
-its concept might be a bit oldfashioned.
-
 
 == Installation
 
